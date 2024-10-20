@@ -26,6 +26,13 @@ Several functions should be available for memory access:
 
 Read, Write and Dump should be very useful for debugging, relocating, hacking,...
 
+How to access above functions:
+
+- click on DEBUG button
+- in the console, store the printed object as a global variable
+- type: myC64 = temp1.jsc64GetInstance()
+- type myC64._mem.dump("0x0800",100,16) to show memory contents from $0x0800 for 100 bytes, with 16 bytes per line.
+
 # Original readme
 jsc64 is a Commodore 64 emulator written in JavaScript by Tim de Koning. It's a port of the FC64, the Commodore 64 emulator written in Actionscript by Darron Schall and Claus Wahlers. More information about the Actionscript version can be found here.
 
