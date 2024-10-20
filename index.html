@@ -82,7 +82,7 @@
 		// <![CDATA[
 		//var jsc64; // let's make it available in console...
 		$(document).ready(function() {
-			jsc64 = $('#container').jsc64($(document)), jsc64Instance = jsc64.jsc64GetInstance(),  percentageComplete = 0, bootWaitFunction;
+			varjsc64 = $('#container').jsc64($(document)), jsc64Instance = jsc64.jsc64GetInstance(),  percentageComplete = 0, bootWaitFunction;
 			bootWaitFunction = function() {				
 				$('#loadingProgress .progress').text(percentageComplete++);
 				if (percentageComplete>100) {				
@@ -99,6 +99,8 @@
 			$('#debugButton').click(function() {
 				console.log(jsc64);
 			});
+			console.log("Use this object to access functions and memory:", jsc64);
+			pippo = jsc64;
 			$('#romList a').click(function() {
 			  	jsc64.loadPrg($(this).attr('href'));
 			  	return false;
