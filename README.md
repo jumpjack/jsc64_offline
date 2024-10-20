@@ -1,6 +1,32 @@
 jsc64
 =====
 
+Some changes to make jsc64 emulator variable visible in console to allow access to memory.
+
+Try the emulator online here (can't work offline until I fix the issue of rom loading): https://jumpjack.github.io/jsc64_offline
+
+Several functions should be available for memory access:
+
+- init()
+- **read(address)**
+- readWord(address)
+- readStack(sp)
+- readCharacterData(address, accessRom)
+- copyRam(ba, address, len)
+- **write(address, value)**
+- writeWord(address, value)
+- writeStack(sp, value)
+- setMemoryBank(bankid, baseAddress, length, data)
+- enableMemoryBank(bankid, enableRead, enableWrite)
+- **dump(adr, len, bytesPerLine)**
+- loadPRG(url)
+- onLoadPRG(data)
+- loadPXX(url)
+- onLoadPXX(data)
+
+Read, Write and Dump should be very useful for debugging, relocating, hacking,...
+
+# Original readme
 jsc64 is a Commodore 64 emulator written in JavaScript by Tim de Koning. It's a port of the FC64, the Commodore 64 emulator written in Actionscript by Darron Schall and Claus Wahlers. More information about the Actionscript version can be found here.
 
 This emulator is meant as a 'proof of concept' and uses the HTML5 Canvas-element to render the Commodore 64 screen layout. This means it will work on all modern browsers, being the lastest version of Firefox, Google Chrome and Safari. Rendering on Internet Explorer should be possible with some minor fixes in the 'Renderer class', but I'm afraid performance will be appalling.
