@@ -22,6 +22,8 @@
 		<input type="button" id="pauseButton" value="Pause" />
 		<input type="button" id="debugButton" value="Debug" />
 		<input type="button" id="RAMbutton" value="RAM" />
+		<input type="button" id="toggleUpdate" value="Start RAM update" />
+ 		
 		You may want to use input below to 'focus' your cursor.
 		<input type="text" id="focusButton" value=""/><br>
 		Open console to access emulator functions.<br>		
@@ -51,7 +53,14 @@
 				}
 			}
 			jsc64Instance._renderer.frameTimer.addEventListener('timer', bootWaitFunction);
-
+////////////////////////////////////////////
+        let updateInterval = 100;
+	let pixelSize = 4;			
+        let isUpdating = false;
+        let updateTimer;
+        const toggleUpdateButton = document.getElementById('toggleUpdate');
+        toggleUpdateButton.addEventListener('click', startUpdate);
+			
 			console.log("JSC64:", jsc64);
 			
 			myC64 = jsc64.jsc64GetInstance();			
@@ -70,7 +79,7 @@
 			});
 			
 			$('#RAMbutton').click(function() {
-				showMemory(mem64kUint8);
+				showMemory(mem64kUint8,2);
 			});
 			
 			$('#romList a').click(function() {
@@ -80,17 +89,45 @@
         const canvas = document.getElementById('memoryCanvas');
         const ctx = canvas.getContext('2d');
 
-        function showMemory(memory) {
+        function showMemory(memory,pixelSize) {
 	   // accepts jsc64._mem.ram
-            const imageData = ctx.createImageData(256, 256);
-            for (let i = 0; i < memory.length; i++) {
-                const value = memory[i];
-                imageData.data[i * 4] = value;     // R
-                imageData.data[i * 4 + 1] = value; // G
-                imageData.data[i * 4 + 2] = value; // B
-                imageData.data[i * 4 + 3] = 255;   // A (opaco)
+            const width = 256 * pixelSize;
+            const height = 256 * pixelSize;
+            canvas.width = width;
+            canvas.height = height;
+            
+            const imageData = ctx.createImageData(width, height);
+            for (let y = 0; y < 256; y++) {
+                for (let x = 0; x < 256; x++) {
+                    const value = memory[y * 256 + x];
+                    for (let py = 0; py < pixelSize; py++) {
+                        for (let px = 0; px < pixelSize; px++) {
+                            const index = ((y * pixelSize + py) * width + (x * pixelSize + px)) * 4;
+                            imageData.data[index] = value;     // R
+                            imageData.data[index + 1] = value; // G
+                            imageData.data[index + 2] = value; // B
+                            imageData.data[index + 3] = 255;   // A
+                        }
+                    }
+                }
             }
             ctx.putImageData(imageData, 0, 0);
+        }	
+
+       function startUpdate() {
+            if (!isUpdating) {
+                isUpdating = true;
+                updateTimer = setInterval(updateMemoryAndVisualize, updateInterval);
+                toggleUpdateButton.textContent = 'Stop Update';
+            } else {
+                isUpdating = false;
+                clearInterval(updateTimer);
+                toggleUpdateButton.textContent = 'Start Update';
+            }
+        }		
+
+        function updateMemoryAndVisualize() {
+            showMemory(mem64kUint8,2);
         }			
 		});
 		// ]]>
