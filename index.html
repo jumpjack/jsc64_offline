@@ -99,8 +99,11 @@
 			$('#debugButton').click(function() {
 				console.log(jsc64);
 			});
-			console.log("Use this object to access functions and memory:", jsc64);
-			pippo = jsc64.getInstance();
+			console.log("JSC64:", jsc64);
+			myC64 = jsc64.jsc64GetInstance();
+			console.log("Use this object to access functions:", myC64);
+			mem = myC64._mem;
+			console.log("Use this object to access memory:", mem);
 			$('#romList a').click(function() {
 			  	jsc64.loadPrg($(this).attr('href'));
 			  	return false;
