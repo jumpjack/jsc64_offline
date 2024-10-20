@@ -10,6 +10,7 @@
 	<fieldset id="controls">
 		<h2>Roms</h2>
 		<ul id="romList">
+			<li><a href="rom/SIDE PACMAN.PRG">GALAGA</a></li>
 			<li><a href="rom/GALAGA.PRG">GALAGA</a></li>
 			<li><a href="rom/COLOURGALAGA.PRG">GALAGACOLOR</a></li>
 			<li><a href="rom/HELLGATE.PRG">HELLGATE</a></li>
@@ -78,12 +79,14 @@
 	<script type="text/javascript" src="js/jquery.jsc64.js"></script>
 	<script type="text/javascript">
 		// <![CDATA[
+		jsc64 = null; // let's make it available in console...
 		$(document).ready(function() {
-			var jsc64 = $('#container').jsc64($(document)), jsc64Instance = jsc64.jsc64GetInstance(),  percentageComplete = 0, bootWaitFunction;
-
+			jsc64 = $('#container').jsc64($(document)), jsc64Instance = jsc64.jsc64GetInstance(),  percentageComplete = 0, bootWaitFunction;
+console.log("JSC64:", jsc64);
 			bootWaitFunction = function() {
 				$('#loadingProgress .progress').text(percentageComplete++);
 				if (percentageComplete>100) {
+console.log("%>100");					
 					$('#loadingProgress').hide('slow');
 					$('#controls').show('slow');
 					jsc64Instance._renderer.frameTimer.detachEvent('timer', bootWaitFunction);
