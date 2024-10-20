@@ -20,6 +20,7 @@
 		</ul>
 		<h2>Controls</h2>
 		<input type="button" id="pauseButton" value="Pause" />
+		<input type="button" id="debugButton" value="Debug" />
 		You may want to use input below to 'focus' your cursor.
 		<input type="text" id="focusButton" value=""/>
 	</fieldset>
@@ -82,11 +83,9 @@
 		jsc64 = null; // let's make it available in console...
 		$(document).ready(function() {
 			jsc64 = $('#container').jsc64($(document)), jsc64Instance = jsc64.jsc64GetInstance(),  percentageComplete = 0, bootWaitFunction;
-			bootWaitFunction = function() {
-console.log("Loading...");				
+			bootWaitFunction = function() {				
 				$('#loadingProgress .progress').text(percentageComplete++);
-				if (percentageComplete>100) {
-console.log("%>100");					
+				if (percentageComplete>100) {				
 					$('#loadingProgress').hide('slow');
 					$('#controls').show('slow');
 					jsc64Instance._renderer.frameTimer.detachEvent('timer', bootWaitFunction);
@@ -96,6 +95,9 @@ console.log("%>100");
 
 			$('#pauseButton').click(function() {
 				jsc64.jsc64Pause();
+			});
+			$('#debugButton').click(function() {
+				console.log(jsc64);
 			});
 			$('#romList a').click(function() {
 			  	jsc64.loadPrg($(this).attr('href'));
