@@ -82,8 +82,8 @@
 		jsc64 = null; // let's make it available in console...
 		$(document).ready(function() {
 			jsc64 = $('#container').jsc64($(document)), jsc64Instance = jsc64.jsc64GetInstance(),  percentageComplete = 0, bootWaitFunction;
-console.log("JSC64:", jsc64);
 			bootWaitFunction = function() {
+console.log("Loading...");				
 				$('#loadingProgress .progress').text(percentageComplete++);
 				if (percentageComplete>100) {
 console.log("%>100");					
