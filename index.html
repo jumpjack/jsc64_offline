@@ -52,20 +52,27 @@
 			}
 			jsc64Instance._renderer.frameTimer.addEventListener('timer', bootWaitFunction);
 
+			console.log("JSC64:", jsc64);
+			
+			myC64 = jsc64.jsc64GetInstance();			
+			console.log("Use this object to access functions:", myC64);
+			
+			myMemObj = myC64._mem;
+			console.log("Use this object to access memory functions and data:", myMemObj);
+			mem64kUint8 = new Uint8Array(myMemObj.ram);
+			
 			$('#pauseButton').click(function() {
 				jsc64.jsc64Pause();
 			});
+			
 			$('#debugButton').click(function() {
 				console.log(jsc64);
 			});
+			
 			$('#RAMbutton').click(function() {
-				showMemory(mem);
+				showMemory(mem64kUint8);
 			});
-			console.log("JSC64:", jsc64);
-			myC64 = jsc64.jsc64GetInstance();
-			console.log("Use this object to access functions:", myC64);
-			mem = myC64._mem;
-			console.log("Use this object to access memory:", mem);
+			
 			$('#romList a').click(function() {
 			  	jsc64.loadPrg($(this).attr('href'));
 			  	return false;
