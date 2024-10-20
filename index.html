@@ -131,8 +131,8 @@ console.log("stop");
 
         function updateMemoryAndVisualize() {
 console.log("udating every ", updateInterval);		    
-		
-            showMemory(mem64kUint8,2);
+		mem64kUint8 = new Uint8Array(myC64._mem.ram);
+            	showMemory(mem64kUint8,2);
         }			
 		});
 		// ]]>
