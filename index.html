@@ -54,10 +54,10 @@
 			}
 			jsc64Instance._renderer.frameTimer.addEventListener('timer', bootWaitFunction);
 ////////////////////////////////////////////
-        let updateInterval = 100;
-	let pixelSize = 4;			
-        let isUpdating = false;
-        let updateTimer;
+         updateInterval = 100;
+	 pixelSize = 4;			
+         isUpdating = false;
+         updateTimer;
         const toggleUpdateButton = document.getElementById('toggleUpdate');
         toggleUpdateButton.addEventListener('click', startUpdate);
 			
@@ -115,11 +115,14 @@
         }	
 
        function startUpdate() {
+console.log("startUpdate?");	       
             if (!isUpdating) {
+console.log("start");		    
                 isUpdating = true;
                 updateTimer = setInterval(updateMemoryAndVisualize, updateInterval);
                 toggleUpdateButton.textContent = 'Stop Update';
             } else {
+console.log("stop");		    
                 isUpdating = false;
                 clearInterval(updateTimer);
                 toggleUpdateButton.textContent = 'Start Update';
@@ -127,6 +130,8 @@
         }		
 
         function updateMemoryAndVisualize() {
+console.log("udating every ", updateInterval);		    
+		
             showMemory(mem64kUint8,2);
         }			
 		});
