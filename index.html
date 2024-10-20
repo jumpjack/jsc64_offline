@@ -100,7 +100,7 @@
 				console.log(jsc64);
 			});
 			console.log("Use this object to access functions and memory:", jsc64);
-			pippo = jsc64;
+			pippo = jsc64.getInstance();
 			$('#romList a').click(function() {
 			  	jsc64.loadPrg($(this).attr('href'));
 			  	return false;
