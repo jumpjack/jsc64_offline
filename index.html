@@ -21,11 +21,16 @@
 		<h2>Controls</h2>
 		<input type="button" id="pauseButton" value="Pause" />
 		<input type="button" id="debugButton" value="Debug" />
+		<input type="button" id="RAMbutton" value="RAM" />
 		You may want to use input below to 'focus' your cursor.
-		<input type="text" id="focusButton" value=""/>
+		<input type="text" id="focusButton" value=""/><br>
+		Open console to access emulator functions.<br>		
 	</fieldset>
 	<div id="container"></div>
 	<div id="loadingProgress">Booting: <span class="progress">0</span>% complete</div>
+	<div id="ram">   <canvas id="memoryCanvas" width="256" height="256"></canvas></div>div>
+	
+ 
 
 	<script type="text/javascript" src="js/jquery/jquery-1.12.4.min.js"></script>
 	<script type="text/javascript" src="js/jquery.jsc64classes.js"></script>
@@ -53,6 +58,9 @@
 			$('#debugButton').click(function() {
 				console.log(jsc64);
 			});
+			$('#RAMbutton').click(function() {
+				showMemory(jsc64._mem.ram);
+			});
 			console.log("JSC64:", jsc64);
 			myC64 = jsc64.jsc64GetInstance();
 			console.log("Use this object to access functions:", myC64);
@@ -62,6 +70,21 @@
 			  	jsc64.loadPrg($(this).attr('href'));
 			  	return false;
 			});
+        const canvas = document.getElementById('memoryCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function showMemory(memory) {
+	   // accepts jsc64._mem.ram
+            const imageData = ctx.createImageData(256, 256);
+            for (let i = 0; i < memory.length; i++) {
+                const value = memory[i];
+                imageData.data[i * 4] = value;     // R
+                imageData.data[i * 4 + 1] = value; // G
+                imageData.data[i * 4 + 2] = value; // B
+                imageData.data[i * 4 + 3] = 255;   // A (opaco)
+            }
+            ctx.putImageData(imageData, 0, 0);
+        }			
 		});
 		// ]]>
 	</script>
