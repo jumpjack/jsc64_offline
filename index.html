@@ -80,9 +80,10 @@
 	<script type="text/javascript" src="js/jquery.jsc64.js"></script>
 	<script type="text/javascript">
 		// <![CDATA[
-		//jsc64 = null; // let's make it available in console...
+		jsc64 = null; // let's make it available in console...
 		$(document).ready(function() {
-			var jsc64 = $('#container').jsc64($(document)), jsc64Instance = jsc64.jsc64GetInstance(),  percentageComplete = 0, bootWaitFunction;
+			jsc64 = $('#container').jsc64($(document)), jsc64Instance = jsc64.jsc64GetInstance(),  percentageComplete = 0, bootWaitFunction;
+			console.log(jsc64);
 			bootWaitFunction = function() {				
 				$('#loadingProgress .progress').text(percentageComplete++);
 				if (percentageComplete>100) {				
