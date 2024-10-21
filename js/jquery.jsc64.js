@@ -196,7 +196,13 @@ function binaryFromArray(array) {
 	loadPrg: function(url) {
 console.log("Altro loadPrg", url);		
     var binFileReader = new BinFileReader(url);
-    var ba = nl.kingsquare.as3.flash.utils.getByteArray(binFileReader.readString(binFileReader.getFileSize()));
+    //var ba = nl.kingsquare.as3.flash.utils.getByteArray(binFileReader.readString(binFileReader.getFileSize()));
+
+loadFileData('path/to/file.bin', cachedDataArray)
+    .then(ba => {
+        console.log('Contenuto del file in ba:', ba);
+        // Puoi continuare a usare ba qui
+		
     var startAddress = 0; 
     var addr = 0;
     var jsc64Instance =  $(this).data('c64');
@@ -226,6 +232,10 @@ console.log("loadPrg - binFileReader", binFileReader);
 		} else {
 			jsc64Instance._cpu.pc = startAddress;
 		}
+    })
+    .catch(error => {
+        console.error('Errore:', error);
+    });
 	},
 	jsc64GetInstance: function() {
 	 	return $(this).data('c64');
