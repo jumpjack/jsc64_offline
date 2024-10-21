@@ -1,4 +1,4 @@
-cachedCharsBinFromFile = [
+cachedCharsArrayFromFile = [
     60,
     102,
     110,

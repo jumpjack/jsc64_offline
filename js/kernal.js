@@ -1,4 +1,4 @@
-cachedKernalBinFromFile = [
+cachedKernalArrayFromFile = [
     133,
     86,
     32,

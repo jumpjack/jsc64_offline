@@ -1,4 +1,4 @@
-cachedBasicBinFromFile = [
+cachedBasicArrayFromFile = [
     148,
     227,
     123,
