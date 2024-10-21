@@ -129,7 +129,7 @@ function BinFileReader(fileURL){
                 // Funzione di callback quando il file è stato letto
                 reader.onload = function(e) {
                     const fileContents = e.target.result; // Contenuto del file
-                    fileContents = fileContents; // Memorizza il contenuto
+                    //fileContents = fileContents; // Memorizza il contenuto
 
                     fileSize = fileContents.length; // Aggiorna la dimensione del file
 
