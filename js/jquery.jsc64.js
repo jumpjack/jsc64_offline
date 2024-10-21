@@ -20,6 +20,60 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+function loadFileData(filePath, cachedDataArray) {
+    // Se i dati sono già stati memorizzati, utilizzali
+    if (cachedDataArray) {
+        console.log(`Using cached data for ${filePath}`);
+        return cachedDataArray;
+    }
+
+    // Controlla se la pagina è caricata localmente
+    const isLocalFile = window.location.protocol === 'file:';
+
+    if (isLocalFile) {
+        // Crea un input di tipo file dinamico per selezionare un file
+alert("Selezionare il file per " + filePath);	    
+        const inputFile = document.createElement('input');
+        inputFile.type = 'file';
+        inputFile.accept = '.bin'; // Puoi specificare i tipi di file accettati
+
+        // Aggiungi un gestore di eventi per il cambiamento dell'input
+        inputFile.addEventListener('change', function(event) {
+            const file = event.target.files[0]; // Ottieni il file selezionato
+            if (file) {
+                const reader = new FileReader();
+
+                // Funzione di callback quando il file è stato letto
+                reader.onload = function(e) {
+                    const fileContents = e.target.result; // Contenuto del file
+                    const binFileReader = new BinFileReader(fileContents); // Inizializza il BinFileReader con i dati del file
+
+                    // Leggi il contenuto e restituisci i dati
+                    const result = binFileReader.readString(binFileReader.getFileSize());
+                    console.log(`Loaded data from user-selected file`);
+                    // Puoi memorizzare i dati in cachedDataArray se necessario
+                    return result;
+                };
+
+                // Leggi il file come testo (o come ArrayBuffer se necessario)
+                reader.readAsText(file); // Cambia in readAsArrayBuffer se il file è binario
+            } else {
+                console.error("Nessun file selezionato.");
+            }
+        });
+
+        // Simula un click sull'input per aprire il file dialog
+        inputFile.click();
+    } else {
+        // Altrimenti, carica i dati dal file e memorizzali
+        const binFileReader = new BinFileReader(filePath);
+        const result = binFileReader.readString(binFileReader.getFileSize());
+        console.log(`Loaded data from ${filePath}`);
+        return result;
+    }
+}			
+
+
 jQuery.fn.extend({
 	jsc64: function(keyboardEventListener) {
 		//only load required classes once...
@@ -106,59 +160,7 @@ function binaryFromArray(array) {
      return array.map(byte => String.fromCharCode(byte)).join('');
 }
 
-function loadFileData(filePath, cachedDataArray) {
-    // Se i dati sono già stati memorizzati, utilizzali
-    if (cachedDataArray) {
-        console.log(`Using cached data for ${filePath}`);
-        return cachedDataArray;
-    }
-
-    // Controlla se la pagina è caricata localmente
-    const isLocalFile = window.location.protocol === 'file:';
-
-    if (isLocalFile) {
-        // Crea un input di tipo file dinamico per selezionare un file
-alert("Selezionare il file per " + filePath);	    
-        const inputFile = document.createElement('input');
-        inputFile.type = 'file';
-        inputFile.accept = '.bin'; // Puoi specificare i tipi di file accettati
-
-        // Aggiungi un gestore di eventi per il cambiamento dell'input
-        inputFile.addEventListener('change', function(event) {
-            const file = event.target.files[0]; // Ottieni il file selezionato
-            if (file) {
-                const reader = new FileReader();
-
-                // Funzione di callback quando il file è stato letto
-                reader.onload = function(e) {
-                    const fileContents = e.target.result; // Contenuto del file
-                    const binFileReader = new BinFileReader(fileContents); // Inizializza il BinFileReader con i dati del file
-
-                    // Leggi il contenuto e restituisci i dati
-                    const result = binFileReader.readString(binFileReader.getFileSize());
-                    console.log(`Loaded data from user-selected file`);
-                    // Puoi memorizzare i dati in cachedDataArray se necessario
-                    return result;
-                };
-
-                // Leggi il file come testo (o come ArrayBuffer se necessario)
-                reader.readAsText(file); // Cambia in readAsArrayBuffer se il file è binario
-            } else {
-                console.error("Nessun file selezionato.");
-            }
-        });
-
-        // Simula un click sull'input per aprire il file dialog
-        inputFile.click();
-    } else {
-        // Altrimenti, carica i dati dal file e memorizzali
-        const binFileReader = new BinFileReader(filePath);
-        const result = binFileReader.readString(binFileReader.getFileSize());
-        console.log(`Loaded data from ${filePath}`);
-        return result;
-    }
-}			
-						
+					
 			
 			//initialze memorybanks and memory manager
 			jsc64Instance._mem = new nl.kingsquare.c64.memory.MemoryManager();
