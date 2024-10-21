@@ -35,20 +35,45 @@ jQuery.fn.extend({
 				keyboardEventListener = $(document);
 			}
 
-			binFileReader = new BinFileReader(JSC64_BASEPATH+'assets/kernal.901227-03.bin');
-			result = binFileReader.readString(binFileReader.getFileSize());
-			console.log("KERNAL=", result);
-			jsc64Instance.romKernel = nl.kingsquare.as3.flash.utils.getByteArray(result);
 
-			binFileReader = new BinFileReader(JSC64_BASEPATH+'assets/basic.901226-01.bin');
-			result = binFileReader.readString(binFileReader.getFileSize());
-			console.log("BASIC=", result);
-			jsc64Instance.romBasic = nl.kingsquare.as3.flash.utils.getByteArray(result);
+			
+// Array per memorizzare i dati dei file
+let cachedKernal = null;
+let cachedBasic = null;
+let cachedChars = null;
 
-			binFileReader = new BinFileReader(JSC64_BASEPATH+'assets/characters.901225-01.bin');
-			console.log("CHARS=", result);
-			jsc64Instance.romChar = nl.kingsquare.as3.flash.utils.getByteArray(result);
+// Funzione per caricare i dati con fallback alla cache
+function loadFileData(filePath, cachedDataArray) {
+    // Se i dati sono già stati memorizzati, utilizzali
+    if (cachedDataArray) {
+        console.log(`Using cached data for ${filePath}`);
+        return cachedDataArray;
+    }
 
+    // Altrimenti, carica i dati dal file e memorizzali
+    const binFileReader = new BinFileReader(filePath);
+    const result = binFileReader.readString(binFileReader.getFileSize());
+    console.log(`Loaded data from ${filePath}`);
+    return result;
+}
+
+// Carica e memorizza il contenuto del file KERNAL
+cachedKernal = loadFileData(JSC64_BASEPATH + 'assets/kernal.901227-03.bin', cachedKernal);
+console.log("kernal=",cachedKernal);
+jsc64Instance.romKernel = nl.kingsquare.as3.flash.utils.getByteArray(cachedKernal);
+
+// Carica e memorizza il contenuto del file BASIC
+cachedBasic = loadFileData(JSC64_BASEPATH + 'assets/basic.901226-01.bin', cachedBasic);
+console.log("kernal=",cachedBasic);
+jsc64Instance.romBasic = nl.kingsquare.as3.flash.utils.getByteArray(cachedBasic);
+
+// Carica e memorizza il contenuto del file CHARS
+cachedChars = loadFileData(JSC64_BASEPATH + 'assets/characters.901225-01.bin', cachedChars);
+console.log("kernal=",cachedChars);
+jsc64Instance.romChar = nl.kingsquare.as3.flash.utils.getByteArray(cachedChars);
+
+
+			
 			//initialze memorybanks and memory manager
 			jsc64Instance._mem = new nl.kingsquare.c64.memory.MemoryManager();
 			jsc64Instance._mem.setMemoryBank(nl.kingsquare.c64.memory.MemoryManager.MEMBANK_KERNAL, 0xe000, jsc64Instance.romKernel.length, jsc64Instance.romKernel);
