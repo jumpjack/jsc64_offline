@@ -89,7 +89,7 @@ console.log("cachedCharscArr=",cachedCharsArr);
 cachedCharsBin =  binaryFromArray(cachedCharsArr);
 console.log("chars2=", (cachedCharsBin === cachedChars));
 cachedCharsBinFromFile = binaryFromArray(cachedCharsArrayFromFile);
-console.log(chars3=", (cachedBasicBinFromFile === cachedChars));
+console.log("chars3=", (cachedBasicBinFromFile === cachedChars));
 jsc64Instance.romChar = nl.kingsquare.as3.flash.utils.getByteArray(cachedCharsBinFromFile);
 console.log("CHARS LOADED");
 
