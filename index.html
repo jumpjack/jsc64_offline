@@ -32,7 +32,11 @@
 	</fieldset>
 	<div id="container"></div>
 	<div id="loadingProgress">Booting: <span class="progress">0</span>% complete</div>
-	<div id="ram">   <canvas id="memoryCanvas" width="256" height="256"></canvas></div></div>
+	<div id="ram">   <canvas id="memoryCanvas" width="256" height="256"></canvas></div>
+	<br>
+	Disassambly:
+	From: <input type="text" id="disStart" value = "0x0801"> - To: <input type="text" id="disEnd" value = "0x0900"><button id = "btnDis" onclick="disass()"><br>
+	<textarea id="txtDisassembly" cols = 50 row= 50>-</textarea><br>
 	
  
 
@@ -64,21 +68,27 @@
         const toggleUpdateButton = document.getElementById('toggleUpdate');
         toggleUpdateButton.addEventListener('click', startUpdate);
 			
+console.log("JSC64:", jsc64);
+				
+myC64 = jsc64.jsc64GetInstance();			
+console.log("Use this object to access functions:", myC64);
+
+myMemObj = myC64._mem;
+console.log("Use this object to access memory functions and data:", myMemObj);
+			
+mem64kUint8 = new Uint8Array(myMemObj.ram);
+console.log("Whole RAM is in myC64._mem.ram: ",myC64._mem.ram);
+
+myCPU = myC64._cpu;
+console.log("Use this object to access CPU functions and data:", myCPU);
+			
 			
 			$('#pauseButton').click(function() {
 				jsc64.jsc64Pause();
 			});
 			
 			$('#debugButton').click(function() {
-				console.log("JSC64:", jsc64);
-				
-				myC64 = jsc64.jsc64GetInstance();			
-				console.log("Use this object to access functions:", myC64);
-				
-				myMemObj = myC64._mem;
-				console.log("Use this object to access memory functions and data:", myMemObj);
-				mem64kUint8 = new Uint8Array(myMemObj.ram);
-				console.log("Whole RAM is in mem64kUint8",mem64kUint8, ", use showMemory(mem64kUint8,pixelSize) to display it");
+//
 			});
 			
 			$('#RAMbutton').click(function() {
@@ -136,7 +146,14 @@ console.log("stop");
 console.log("udating every ", updateInterval);		    
 		mem64kUint8 = new Uint8Array(myC64._mem.ram);
             	showMemory(mem64kUint8,2);
-        }			
+        }	
+
+
+function disass() {
+	startAddr = document.getElementById("disStart").value;
+	endAddr = document.getElementById("disEnd").value;
+	document.getElementById("txtDisassembly").value = myC64._cpu.disassemble(startAddr, endAddr-startAddr)
+}
 		});
 		// ]]>
 	</script>
