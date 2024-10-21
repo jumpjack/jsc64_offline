@@ -170,6 +170,7 @@ console.log("start=",startAddress);
 			jsc64Instance._mem.write(addr++, ba[i]);
 		}
 		if(startAddress == 0x0801) {
+console.log("Loaded standard basic program");			
 			// run command
 			var charsInBuffer = jsc64Instance._mem.read(0xc6);
 			if(charsInBuffer < jsc64Instance._mem.read(0x0289) - 4) {
@@ -181,6 +182,7 @@ console.log("start=",startAddress);
 				jsc64Instance._mem.write(0xc6, charsInBuffer + 5);
 			}
 		} else {
+console.log("Loaded binary, jumping to ", startAddress);			
 			jsc64Instance._cpu.pc = startAddress;
 		}
 	},
