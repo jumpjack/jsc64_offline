@@ -73,14 +73,17 @@ console.log("chars=",cachedChars.length);
 jsc64Instance.romChar = nl.kingsquare.as3.flash.utils.getByteArray(cachedChars);
 
 
+
 // Funzione per convertire i dati in un array JSON
-function createJsonArray(dataArray, variableName) {
-    // Convertiamo l'array in un formato JSON e lo formattiamo come variabile JavaScript
+function createJsonArrayFromBinary(data, variableName) {
+    // Convertiamo il testo binario in un array di numeri, dove ogni numero rappresenta un byte
+    const dataArray = Array.from(data, char => char.charCodeAt(0) & 0xFF);
+
+    // Convertiamo l'array in formato JSON e lo mostriamo in console
     const jsonData = JSON.stringify(dataArray);
     console.log(`Copia il seguente contenuto e incollalo in un file ${variableName}.js:`);
     console.log(`var ${variableName} = ${jsonData};`);
 }
-
 
 createJsonArray(cachedKernal, 'kernalData');
 createJsonArray(cachedBasic, 'basicData');
