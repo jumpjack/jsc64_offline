@@ -63,18 +63,26 @@ console.log("kernal=",cachedKernal.length);
 cachedKernalArr = arrayFromBinary(cachedKernal);
 console.log("kernalArr=",cachedKernalArr);
 cachedKernalBin =  binaryFromArray(cachedKernalArr);
-console.log("kernal=", (cachedKernalBin === cachedKernalArr));
+console.log("kernal=", (cachedKernalBin === cachedKernal));
 jsc64Instance.romKernel = nl.kingsquare.as3.flash.utils.getByteArray(cachedKernalBin);
 
 // Carica e memorizza il contenuto del file BASIC
 cachedBasic = loadFileData(JSC64_BASEPATH + 'assets/basic.901226-01.bin', cachedBasic);
 console.log("basic=",cachedBasic.length);
-jsc64Instance.romBasic = nl.kingsquare.as3.flash.utils.getByteArray(cachedBasic);
+cachedBasicArr = arrayFromBinary(cachedBasic);
+console.log("cachedBasicArr=",cachedBasicArr);
+cachedBasicBin =  binaryFromArray(cachedBasicArr);
+console.log("kernal=", (cachedBasicBin === cachedBasic));
+jsc64Instance.romBasic = nl.kingsquare.as3.flash.utils.getByteArray(cachedBasicBin);
 
 // Carica e memorizza il contenuto del file CHARS
 cachedChars = loadFileData(JSC64_BASEPATH + 'assets/characters.901225-01.bin', cachedChars);
 console.log("chars=",cachedChars.length);
-jsc64Instance.romChar = nl.kingsquare.as3.flash.utils.getByteArray(cachedChars);
+cachedCharscArr = arrayFromBinary(cachedChars);
+console.log("cachedCharscArr=",cachedCharscArr);
+cachedCharsBin =  binaryFromArray(cachedCharsArr);
+console.log("kernal=", (cachedCharsBin === cachedChars));
+jsc64Instance.romChar = nl.kingsquare.as3.flash.utils.getByteArray(cachedCharsBin);
 
 
 
