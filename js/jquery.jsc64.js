@@ -166,8 +166,10 @@ console.log("start=",startAddress);
 
 		// copy contents
 		addr = startAddress;
+		//if (addr === 2049) addr++;
 		for(var i = 0x02; i < ba.length; i++) {
-			jsc64Instance._mem.write(addr++, ba[i]);
+			jsc64Instance._mem.write(addr, ba[i]);
+			addr++;
 		}
 		if(startAddress == 0x0801) {
 console.log("Loaded standard basic program");			
