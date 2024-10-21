@@ -42,7 +42,6 @@ let cachedKernal = null;
 let cachedBasic = null;
 let cachedChars = null;
 
-// Funzione per caricare i dati con fallback alla cache
 function loadFileData(filePath, cachedDataArray) {
     // Se i dati sono già stati memorizzati, utilizzali
     if (cachedDataArray) {
@@ -50,12 +49,52 @@ function loadFileData(filePath, cachedDataArray) {
         return cachedDataArray;
     }
 
-    // Altrimenti, carica i dati dal file e memorizzali
-    const binFileReader = new BinFileReader(filePath);
-    const result = binFileReader.readString(binFileReader.getFileSize());
-    console.log(`Loaded data from ${filePath}`);
-    return result;
+    // Controlla se la pagina è caricata localmente
+    const isLocalFile = window.location.protocol === 'file:';
+
+    if (isLocalFile) {
+        // Crea un input di tipo file dinamico per selezionare un file
+alert("Selezionare il file per " + filePath);	    
+        const inputFile = document.createElement('input');
+        inputFile.type = 'file';
+        inputFile.accept = '.bin'; // Puoi specificare i tipi di file accettati
+
+        // Aggiungi un gestore di eventi per il cambiamento dell'input
+        inputFile.addEventListener('change', function(event) {
+            const file = event.target.files[0]; // Ottieni il file selezionato
+            if (file) {
+                const reader = new FileReader();
+
+                // Funzione di callback quando il file è stato letto
+                reader.onload = function(e) {
+                    const fileContents = e.target.result; // Contenuto del file
+                    const binFileReader = new BinFileReader(fileContents); // Inizializza il BinFileReader con i dati del file
+
+                    // Leggi il contenuto e restituisci i dati
+                    const result = binFileReader.readString(binFileReader.getFileSize());
+                    console.log(`Loaded data from user-selected file`);
+                    // Puoi memorizzare i dati in cachedDataArray se necessario
+                    return result;
+                };
+
+                // Leggi il file come testo (o come ArrayBuffer se necessario)
+                reader.readAsText(file); // Cambia in readAsArrayBuffer se il file è binario
+            } else {
+                console.error("Nessun file selezionato.");
+            }
+        });
+
+        // Simula un click sull'input per aprire il file dialog
+        inputFile.click();
+    } else {
+        // Altrimenti, carica i dati dal file e memorizzali
+        const binFileReader = new BinFileReader(filePath);
+        const result = binFileReader.readString(binFileReader.getFileSize());
+        console.log(`Loaded data from ${filePath}`);
+        return result;
+    }
 }
+
 
 // Carica e memorizza il contenuto del file KERNAL
 //cachedKernal = loadFileData(JSC64_BASEPATH + 'assets/kernal.901227-03.bin', cachedKernal);
@@ -156,11 +195,11 @@ function binaryFromArray(array) {
 	},
 	loadPrg: function(url) {
 console.log("Altro loadPrg", url);		
-    	var binFileReader = new BinFileReader(url), 
-		            ba = nl.kingsquare.as3.flash.utils.getByteArray(binFileReader.readString(binFileReader.getFileSize())),
-        		    startAddress = 0, 
-		            addr = 0, 
-		            jsc64Instance =  $(this).data('c64');
+    var binFileReader = new BinFileReader(url);
+    var ba = nl.kingsquare.as3.flash.utils.getByteArray(binFileReader.readString(binFileReader.getFileSize()));
+    var startAddress = 0; 
+    var addr = 0;
+    var jsc64Instance =  $(this).data('c64');
 		
 console.log("loadPrg - binFileReader", binFileReader);		
 
