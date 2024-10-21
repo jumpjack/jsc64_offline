@@ -60,6 +60,10 @@ function loadFileData(filePath, cachedDataArray) {
 // Carica e memorizza il contenuto del file KERNAL
 cachedKernal = loadFileData(JSC64_BASEPATH + 'assets/kernal.901227-03.bin', cachedKernal);
 console.log("kernal=",cachedKernal.length);
+cachedKernalArr = arrayFromBinary(cachedKernal);
+console.log("kernalArr=",cachedKernalArr);
+cachedKernalBin =  binaryFromArray(cachedKernalArr);
+console.log("kernal=", (cachedKernalBin === cachedKernalArr));
 jsc64Instance.romKernel = nl.kingsquare.as3.flash.utils.getByteArray(cachedKernal);
 
 // Carica e memorizza il contenuto del file BASIC
@@ -74,17 +78,17 @@ jsc64Instance.romChar = nl.kingsquare.as3.flash.utils.getByteArray(cachedChars);
 
 
 
-// Funzione per convertire i dati in un array JSON
-function createJsonArrayFromBinary(data, variableName) {
-    // Convertiamo il testo binario in un array di numeri, dove ogni numero rappresenta un byte
-    const dataArray = Array.from(data, char => char.charCodeAt(0) & 0xFF);
 
-    // Convertiamo l'array in formato JSON e lo mostriamo in console
-    const jsonData = JSON.stringify(dataArray);
-    console.log(`Copia il seguente contenuto e incollalo in un file ${variableName}.js:`);
-    console.log(`var ${variableName} = ${jsonData};`);
+function arrayFromBinary(data) {
+    // Convertiamo il testo binario in un array di numeri, dove ogni numero rappresenta un byte
+    return  Array.from(data, char => char.charCodeAt(0) & 0xFF);
 }
 
+function binaryFromArray(array) {
+    // Convertiamo il testo binario in un array di numeri, dove ogni numero rappresenta un byte
+     return dataArray.map(byte => String.fromCharCode(byte)).join('');
+}
+			
 createJsonArray(cachedKernal, 'kernalData');
 createJsonArray(cachedBasic, 'basicData');
 createJsonArray(cachedChars, 'charData');
