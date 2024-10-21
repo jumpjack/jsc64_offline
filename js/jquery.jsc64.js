@@ -155,26 +155,8 @@ function binaryFromArray(array) {
 		jsc64Instance._renderer.frameTimer.running = !jsc64Instance._renderer.frameTimer.running;
 	},
 	loadPrg: function(url) {
-/*
-	    	var binFileReader = new BinFileReader(url);
-		var ba = nl.kingsquare.as3.flash.utils.getByteArray(binFileReader.readString(binFileReader.getFileSize()));
- */
-
-console.log("Mi chiedono ", url);
-const reader = new FileReader();
-
-reader.onload = (e) => {
-    // e.target.result contiene il contenuto del file caricato come ArrayBuffer
-    const arrayBuffer = e.target.result;
-
-    // Convertiamo l'ArrayBuffer in un tipo di byte array (Uint8Array)
-    var ba = new Uint8Array(arrayBuffer);
-    
-    // Ora puoi utilizzare `ba` come desideri
-console.log("Dati caricati in ba:",ba);
-		var startAddress = 0;
-		var addr = 0;
-		var jsc64Instance =  $(this).data('c64');
+    	var binFileReader = new BinFileReader(url), ba = nl.kingsquare.as3.flash.utils.getByteArray(binFileReader.readString(binFileReader.getFileSize())),
+        startAddress = 0, addr = 0, jsc64Instance =  $(this).data('c64');
 
 		// get start address
 		ba.endian = Endian.LITTLE_ENDIAN;
@@ -199,15 +181,6 @@ console.log("Dati caricati in ba:",ba);
 		} else {
 			jsc64Instance._cpu.pc = startAddress;
 		}
-
-    // Qui puoi chiamare eventuali altre funzioni che utilizzano `ba`
-};
-
-// Leggi il file come ArrayBuffer
-reader.readAsArrayBuffer(file);
-    }		
-
-	
 	},
 	jsc64GetInstance: function() {
 	 	return $(this).data('c64');
