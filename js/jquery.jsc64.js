@@ -20,9 +20,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-	
-
-
 jQuery.fn.extend({
 	jsc64: function(keyboardEventListener) {
 		//only load required classes once...
@@ -39,18 +36,30 @@ jQuery.fn.extend({
 			}
 
 
-			
+
 // Array per memorizzare i dati dei file
 let cachedKernal = null;
 let cachedBasic = null;
 let cachedChars = null;
 
+// Funzione per caricare i dati con fallback alla cache
+function loadFileData(filePath, cachedDataArray) {
+    // Se i dati sono già stati memorizzati, utilizzali
+    if (cachedDataArray) {
+        console.log(`Using cached data for ${filePath}`);
+        return cachedDataArray;
+    }
 
-
+    // Altrimenti, carica i dati dal file e memorizzali
+    const binFileReader = new BinFileReader(filePath);
+    const result = binFileReader.readString(binFileReader.getFileSize());
+    console.log(`Loaded data from ${filePath}`);
+    return result;
+}
 
 // Carica e memorizza il contenuto del file KERNAL
 //cachedKernal = loadFileData(JSC64_BASEPATH + 'assets/kernal.901227-03.bin', cachedKernal);
-			
+
 /*
 	console.log("kernal=",cachedKernal.length);
 	cachedKernalArr = arrayFromBinary(cachedKernal);
@@ -58,15 +67,15 @@ let cachedChars = null;
 	cachedKernalBin =  binaryFromArray(cachedKernalArr);
 	console.log("kernal2=", (cachedKernalBin === cachedKernal));
 */
-			
+
 cachedKernalBinFromFile = binaryFromArray(cachedKernalArrayFromFile);
-//console.log("kernal3=", (cachedKernalBinFromFile === cachedKernal));			
+//console.log("kernal3=", (cachedKernalBinFromFile === cachedKernal));
 jsc64Instance.romKernel = nl.kingsquare.as3.flash.utils.getByteArray(cachedKernalBinFromFile);
 console.log("KERNAL LOADED");
 
 // Carica e memorizza il contenuto del file BASIC
 //cachedBasic = loadFileData(JSC64_BASEPATH + 'assets/basic.901226-01.bin', cachedBasic);
-			
+
 /*
 	console.log("basic=",cachedBasic.length);
 	cachedBasicArr = arrayFromBinary(cachedBasic);
@@ -74,15 +83,15 @@ console.log("KERNAL LOADED");
 	cachedBasicBin =  binaryFromArray(cachedBasicArr);
 	console.log("basic2=", (cachedBasicBin === cachedBasic));
 */
-			
+
 cachedBasicBinFromFile = binaryFromArray(cachedBasicArrayFromFile);
-//console.log("basic3=", (cachedBasicBinFromFile === cachedBasic));			
+//console.log("basic3=", (cachedBasicBinFromFile === cachedBasic));
 jsc64Instance.romBasic = nl.kingsquare.as3.flash.utils.getByteArray(cachedBasicBinFromFile);
 console.log("BASIC LOADED");
-			
+
 // Carica e memorizza il contenuto del file CHARS
 //cachedChars = loadFileData(JSC64_BASEPATH + 'assets/characters.901225-01.bin', cachedChars);
-			
+
 /*
 	console.log("chars=",cachedChars.length);
 	cachedCharsArr = arrayFromBinary(cachedChars);
@@ -90,7 +99,7 @@ console.log("BASIC LOADED");
 	cachedCharsBin =  binaryFromArray(cachedCharsArr);
 	console.log("chars2=", (cachedCharsBin === cachedChars));
 */
-			
+
 cachedCharsBinFromFile = binaryFromArray(cachedCharsArrayFromFile);
 //console.log("chars3=", (cachedCharsBinFromFile === cachedChars));
 jsc64Instance.romChar = nl.kingsquare.as3.flash.utils.getByteArray(cachedCharsBinFromFile);
@@ -109,8 +118,7 @@ function binaryFromArray(array) {
      return array.map(byte => String.fromCharCode(byte)).join('');
 }
 
-					
-			
+
 			//initialze memorybanks and memory manager
 			jsc64Instance._mem = new nl.kingsquare.c64.memory.MemoryManager();
 			jsc64Instance._mem.setMemoryBank(nl.kingsquare.c64.memory.MemoryManager.MEMBANK_KERNAL, 0xe000, jsc64Instance.romKernel.length, jsc64Instance.romKernel);
@@ -147,24 +155,9 @@ function binaryFromArray(array) {
 		jsc64Instance._renderer.frameTimer.running = !jsc64Instance._renderer.frameTimer.running;
 	},
 	loadPrg: function(url) {
-console.log("Altro loadPrg", url);		
-    var binFileReader = new BinFileReader(url);
-    //var ba = nl.kingsquare.as3.flash.utils.getByteArray(binFileReader.readString(binFileReader.getFileSize()));
+    	var binFileReader = new BinFileReader(url), ba = nl.kingsquare.as3.flash.utils.getByteArray(binFileReader.readString(binFileReader.getFileSize())),
+        startAddress = 0, addr = 0, jsc64Instance =  $(this).data('c64');
 
-BinFileReader(url)
-    .then(ba => {
-        // Qui ba è già stato assegnato e puoi continuare a usarlo
-        console.log('Contenuto del file in ba:', ba);
-        // Puoi continuare a lavorare con ba qui
-    })
-    .catch(error => {
-        console.error('Errore:', error);
-    });		
-		
-    var startAddress = 0; 
-    var addr = 0;
-    var jsc64Instance =  $(this).data('c64');
-		
 		// get start address
 		ba.endian = Endian.LITTLE_ENDIAN;
 		startAddress = ba.readShort();
