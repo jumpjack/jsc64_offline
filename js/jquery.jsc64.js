@@ -202,7 +202,7 @@ console.log("Altro loadPrg", url);
     var binFileReader = new BinFileReader(url);
     //var ba = nl.kingsquare.as3.flash.utils.getByteArray(binFileReader.readString(binFileReader.getFileSize()));
 
-loadFileData('path/to/file.bin', cachedDataArray)
+loadFileData('path/to/file.bin')
     .then(ba => {
         console.log('Contenuto del file in ba:', ba);
         // Puoi continuare a usare ba qui
