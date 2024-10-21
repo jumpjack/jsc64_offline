@@ -106,6 +106,7 @@ function BinFileReader(fileURL){
 	}
 
 	function BinFileReaderImpl(fileURL){
+	console.log("BinFileReaderImpl",fileURL);
 		var req = new XMLHttpRequest();
 
 		req.open('GET', fileURL, false);
@@ -127,11 +128,23 @@ function BinFileReader(fileURL){
 			return fileContents.charCodeAt(i) & 0xff;
 		}
 	}
+
+
+
+
+
+
+
+/////////////////
+
+
 	if(/msie/i.test(navigator.userAgent) && !/opera/i.test(navigator.userAgent))
 		BinFileReaderImpl_IE.apply(this, [fileURL]);
 	else
 		BinFileReaderImpl.apply(this, [fileURL]);
 }
+
+
 
 document.write('<script type="text/vbscript">\n\
 Function BinFileReaderImpl_IE_VBAjaxLoader(fileName)\n\
