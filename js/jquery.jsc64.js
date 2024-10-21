@@ -155,8 +155,11 @@ function binaryFromArray(array) {
 		jsc64Instance._renderer.frameTimer.running = !jsc64Instance._renderer.frameTimer.running;
 	},
 	loadPrg: function(url) {
-    	var binFileReader = new BinFileReader(url), ba = nl.kingsquare.as3.flash.utils.getByteArray(binFileReader.readString(binFileReader.getFileSize())),
-        startAddress = 0, addr = 0, jsc64Instance =  $(this).data('c64');
+	    	var binFileReader = new BinFileReader(url)
+		var ba = nl.kingsquare.as3.flash.utils.getByteArray(binFileReader.readString(binFileReader.getFileSize()))
+		var startAddress = 0;
+		var addr = 0;
+		var jsc64Instance =  $(this).data('c64');
 
 		// get start address
 		ba.endian = Endian.LITTLE_ENDIAN;
