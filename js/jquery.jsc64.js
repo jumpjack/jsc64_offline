@@ -193,7 +193,7 @@ console.log("mem ", startAddress, "=", jsc64Instance._mem.read(startAddress));
 console.log("mem ", (startAddress+1), "=", jsc64Instance._mem.read(startAddress+1));			
 console.log("mem ", (startAddress+2), "=", jsc64Instance._mem.read(startAddress+2));			
 			
-			jsc64Instance._cpu.pc = startAddress;
+		//	jsc64Instance._cpu.pc = startAddress;
 		}
 	},
 	jsc64GetInstance: function() {
