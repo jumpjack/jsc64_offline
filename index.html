@@ -20,6 +20,7 @@
 			<li><a href="rom/RALLYSPEEDWAYII.PRG">RALLYSPEEDWAYII</a></li>
 			<li><a href="rom/VOIDRUNNER.PRG">VOIDRUNNER</a></li>
 		</ul>
+<input type="file" id="fileInput" accept=".prg"> 		
 		<h2>Controls</h2>
 		<input type="button" id="pauseButton" value="Pause" />
 		<input type="button" id="debugButton" value="Debug" />
@@ -103,6 +104,14 @@ console.log("Use this object to access CPU functions and data:", myCPU);
 			  	jsc64.loadPrg($(this).attr('href'));
 			  	return false;
 			});
+
+document.getElementById('fileInput').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    MyModule.loadPrg(file);
+});
+			
+
+			
         const canvas = document.getElementById('memoryCanvas');
         const ctx = canvas.getContext('2d');
 
