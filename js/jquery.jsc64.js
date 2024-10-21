@@ -73,6 +73,20 @@ console.log("chars=",cachedChars.length);
 jsc64Instance.romChar = nl.kingsquare.as3.flash.utils.getByteArray(cachedChars);
 
 
+// Funzione per convertire i dati in un array JSON
+function createJsonArray(dataArray, variableName) {
+    // Convertiamo l'array in un formato JSON e lo formattiamo come variabile JavaScript
+    const jsonData = JSON.stringify(dataArray);
+    console.log(`Copia il seguente contenuto e incollalo in un file ${variableName}.js:`);
+    console.log(`var ${variableName} = ${jsonData};`);
+}
+
+
+createJsonArray(cachedKernal, 'kernalData');
+createJsonArray(cachedBasic, 'basicData');
+createJsonArray(cachedChars, 'charData');
+
+			
 			
 			//initialze memorybanks and memory manager
 			jsc64Instance._mem = new nl.kingsquare.c64.memory.MemoryManager();
