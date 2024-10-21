@@ -64,7 +64,7 @@ cachedKernalArr = arrayFromBinary(cachedKernal);
 console.log("kernalArr=",cachedKernalArr);
 cachedKernalBin =  binaryFromArray(cachedKernalArr);
 console.log("kernal=", (cachedKernalBin === cachedKernalArr));
-jsc64Instance.romKernel = nl.kingsquare.as3.flash.utils.getByteArray(cachedKernal);
+jsc64Instance.romKernel = nl.kingsquare.as3.flash.utils.getByteArray(cachedKernalBin);
 
 // Carica e memorizza il contenuto del file BASIC
 cachedBasic = loadFileData(JSC64_BASEPATH + 'assets/basic.901226-01.bin', cachedBasic);
@@ -86,7 +86,7 @@ function arrayFromBinary(data) {
 
 function binaryFromArray(array) {
     // Convertiamo il testo binario in un array di numeri, dove ogni numero rappresenta un byte
-     return dataArray.map(byte => String.fromCharCode(byte)).join('');
+     return array.map(byte => String.fromCharCode(byte)).join('');
 }
 						
 			
