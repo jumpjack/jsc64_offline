@@ -105,29 +105,70 @@ function BinFileReader(fileURL){
 		}
 	}
 
-	function BinFileReaderImpl(fileURL){
-	console.log("BinFileReaderImpl",fileURL);
-		var req = new XMLHttpRequest();
+	function BinFileReaderImpl(fileURL) {
+    console.log("BinFileReaderImpl", fileURL);
+    
+    // Controlla se la pagina è caricata localmente
+    const isLocalFile = window.location.protocol === 'file:';
 
-		req.open('GET', fileURL, false);
+    if (isLocalFile) {
+        // Mostra il percorso del file all'utente
+        alert(`Per favore, seleziona il file da caricare: ${fileURL}`);
 
-		//XHR binary charset opt by Marcus Granado 2006 [http://mgran.blogspot.com]
-		req.overrideMimeType('text/plain; charset=x-user-defined');
-		req.send(null);
+        // Crea un input di tipo file dinamico per selezionare un file
+        const inputFile = document.createElement('input');
+        inputFile.type = 'file';
+        inputFile.accept = '.bin'; // Specifica i tipi di file accettati
 
-		if (req.status != 200) {
-			console.log('failing because of '+req.status);
-			throwException(_exception.FileLoadFailed);
-		}
+        // Aggiungi un gestore di eventi per il cambiamento dell'input
+        inputFile.addEventListener('change', function(event) {
+            const file = event.target.files[0]; // Ottieni il file selezionato
+            if (file) {
+                const reader = new FileReader();
 
-		fileContents = req.responseText;
+                // Funzione di callback quando il file è stato letto
+                reader.onload = function(e) {
+                    const fileContents = e.target.result; // Contenuto del file
+                    fileContents = fileContents; // Memorizza il contenuto
 
-		fileSize = fileContents.length;
+                    fileSize = fileContents.length; // Aggiorna la dimensione del file
 
-		this.readByteAt = function(i){
-			return fileContents.charCodeAt(i) & 0xff;
-		}
-	}
+                    this.readByteAt = function(i) {
+                        return fileContents.charCodeAt(i) & 0xff; // Funzione per leggere il byte
+                    }.bind(this); // Binding del contesto
+
+                    console.log(`Loaded data from user-selected file: ${file.name}`);
+                }.bind(this); // Binding del contesto
+
+                // Leggi il file come testo
+                reader.readAsText(file); // Cambia in readAsArrayBuffer se il file è binario
+            } else {
+                console.error("Nessun file selezionato.");
+            }
+        });
+
+        // Simula un click sull'input per aprire il file dialog
+        inputFile.click();
+    } else {
+        // Se non è un file locale, carica il file tramite XMLHttpRequest
+        var req = new XMLHttpRequest();
+        req.open('GET', fileURL, false);
+        req.overrideMimeType('text/plain; charset=x-user-defined');
+        req.send(null);
+
+        if (req.status != 200) {
+            console.log('failing because of ' + req.status);
+            throwException(_exception.FileLoadFailed);
+        }
+
+        fileContents = req.responseText;
+        fileSize = fileContents.length;
+
+        this.readByteAt = function(i) {
+            return fileContents.charCodeAt(i) & 0xff;
+        };
+    }
+}
 
 
 
