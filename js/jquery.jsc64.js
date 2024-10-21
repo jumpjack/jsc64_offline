@@ -36,11 +36,18 @@ jQuery.fn.extend({
 			}
 
 			binFileReader = new BinFileReader(JSC64_BASEPATH+'assets/kernal.901227-03.bin');
-			jsc64Instance.romKernel = nl.kingsquare.as3.flash.utils.getByteArray(binFileReader.readString(binFileReader.getFileSize()));
+			result = binFileReader.readString(binFileReader.getFileSize());
+			console.log("KERNAL=", result);
+			jsc64Instance.romKernel = nl.kingsquare.as3.flash.utils.getByteArray(result);
+
 			binFileReader = new BinFileReader(JSC64_BASEPATH+'assets/basic.901226-01.bin');
-			jsc64Instance.romBasic = nl.kingsquare.as3.flash.utils.getByteArray(binFileReader.readString(binFileReader.getFileSize()));
+			result = binFileReader.readString(binFileReader.getFileSize());
+			console.log("BASIC=", result);
+			jsc64Instance.romBasic = nl.kingsquare.as3.flash.utils.getByteArray(result);
+
 			binFileReader = new BinFileReader(JSC64_BASEPATH+'assets/characters.901225-01.bin');
-			jsc64Instance.romChar = nl.kingsquare.as3.flash.utils.getByteArray(binFileReader.readString(binFileReader.getFileSize()));
+			console.log("CHARS=", result);
+			jsc64Instance.romChar = nl.kingsquare.as3.flash.utils.getByteArray(result);
 
 			//initialze memorybanks and memory manager
 			jsc64Instance._mem = new nl.kingsquare.c64.memory.MemoryManager();
