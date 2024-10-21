@@ -149,8 +149,17 @@ function binaryFromArray(array) {
 	loadPrg: function(url) {
 console.log("Altro loadPrg", url);		
     var binFileReader = new BinFileReader(url);
-    var ba = nl.kingsquare.as3.flash.utils.getByteArray(binFileReader.readString(binFileReader.getFileSize()));
+    //var ba = nl.kingsquare.as3.flash.utils.getByteArray(binFileReader.readString(binFileReader.getFileSize()));
 
+BinFileReader(url)
+    .then(ba => {
+        // Qui ba è già stato assegnato e puoi continuare a usarlo
+        console.log('Contenuto del file in ba:', ba);
+        // Puoi continuare a lavorare con ba qui
+    })
+    .catch(error => {
+        console.error('Errore:', error);
+    });		
 		
     var startAddress = 0; 
     var addr = 0;
