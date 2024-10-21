@@ -30,7 +30,7 @@ function loadFileData(filePath, cachedDataArray) {
     // Controlla se la pagina è caricata localmente
     const isLocalFile = window.location.protocol === 'file:';
 
-    if (isLocalFile) {
+    if (true/*isLocalFile*/) {
         // Crea un input di tipo file dinamico per selezionare un file
 alert("Selezionare il file per " + filePath);	    
         const inputFile = document.createElement('input');
