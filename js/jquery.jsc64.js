@@ -58,7 +58,7 @@ function loadFileData(filePath, cachedDataArray) {
 }
 
 // Carica e memorizza il contenuto del file KERNAL
-cachedKernal = loadFileData(JSC64_BASEPATH + 'assets/kernal.901227-03.bin', cachedKernal);
+//cachedKernal = loadFileData(JSC64_BASEPATH + 'assets/kernal.901227-03.bin', cachedKernal);
 			
 /*
 	console.log("kernal=",cachedKernal.length);
@@ -69,12 +69,12 @@ cachedKernal = loadFileData(JSC64_BASEPATH + 'assets/kernal.901227-03.bin', cach
 */
 			
 cachedKernalBinFromFile = binaryFromArray(cachedKernalArrayFromFile);
-console.log("kernal3=", (cachedKernalBinFromFile === cachedKernal));			
+//console.log("kernal3=", (cachedKernalBinFromFile === cachedKernal));			
 jsc64Instance.romKernel = nl.kingsquare.as3.flash.utils.getByteArray(cachedKernalBinFromFile);
 console.log("KERNAL LOADED");
 
 // Carica e memorizza il contenuto del file BASIC
-cachedBasic = loadFileData(JSC64_BASEPATH + 'assets/basic.901226-01.bin', cachedBasic);
+//cachedBasic = loadFileData(JSC64_BASEPATH + 'assets/basic.901226-01.bin', cachedBasic);
 			
 /*
 	console.log("basic=",cachedBasic.length);
@@ -85,12 +85,12 @@ cachedBasic = loadFileData(JSC64_BASEPATH + 'assets/basic.901226-01.bin', cached
 */
 			
 cachedBasicBinFromFile = binaryFromArray(cachedBasicArrayFromFile);
-console.log("basic3=", (cachedBasicBinFromFile === cachedBasic));			
+//console.log("basic3=", (cachedBasicBinFromFile === cachedBasic));			
 jsc64Instance.romBasic = nl.kingsquare.as3.flash.utils.getByteArray(cachedBasicBinFromFile);
 console.log("BASIC LOADED");
 			
 // Carica e memorizza il contenuto del file CHARS
-cachedChars = loadFileData(JSC64_BASEPATH + 'assets/characters.901225-01.bin', cachedChars);
+//cachedChars = loadFileData(JSC64_BASEPATH + 'assets/characters.901225-01.bin', cachedChars);
 			
 /*
 	console.log("chars=",cachedChars.length);
@@ -101,7 +101,7 @@ cachedChars = loadFileData(JSC64_BASEPATH + 'assets/characters.901225-01.bin', c
 */
 			
 cachedCharsBinFromFile = binaryFromArray(cachedCharsArrayFromFile);
-console.log("chars3=", (cachedCharsBinFromFile === cachedChars));
+//console.log("chars3=", (cachedCharsBinFromFile === cachedChars));
 jsc64Instance.romChar = nl.kingsquare.as3.flash.utils.getByteArray(cachedCharsBinFromFile);
 console.log("CHARS LOADED");
 
