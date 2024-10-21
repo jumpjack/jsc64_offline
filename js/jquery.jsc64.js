@@ -88,12 +88,7 @@ function binaryFromArray(array) {
     // Convertiamo il testo binario in un array di numeri, dove ogni numero rappresenta un byte
      return dataArray.map(byte => String.fromCharCode(byte)).join('');
 }
-			
-createJsonArray(cachedKernal, 'kernalData');
-createJsonArray(cachedBasic, 'basicData');
-createJsonArray(cachedChars, 'charData');
-
-			
+						
 			
 			//initialze memorybanks and memory manager
 			jsc64Instance._mem = new nl.kingsquare.c64.memory.MemoryManager();
