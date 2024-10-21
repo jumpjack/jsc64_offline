@@ -229,6 +229,7 @@ nl.kingsquare.c64.memory.MemoryManager = Class.extend({
 	* Load .PRG file
 	*/
 	loadPRG: function(url/*:String*/) {
+console.log("Loading '"+ url + "'....");		
 		$.get(url, {}, this.onLoadPRG);
 	},
 
@@ -237,7 +238,7 @@ nl.kingsquare.c64.memory.MemoryManager = Class.extend({
 	 * Copy contents to memory.
 	 */
 	onLoadPRG: function(data) {
-console.log("prog loaded, getting Bytearray...");		
+console.log("prog loaded, getting Bytearray...", data);		
 		var ba = nl.kingsquare.as3.flash.utils.ByteArray(data);
 		console.log("PRG file loaded");
 		// get start address
