@@ -46,7 +46,7 @@ nl.kingsquare.c64.memory.MemoryManager = Class.extend({
 		this.memoryBankInfo[nl.kingsquare.c64.memory.MemoryManager.MEMBANK_SID] = new nl.kingsquare.c64.memory.MemoryBankInfo(this.sid, 0xd400, 0x0400);
 		// initialize memory maps.
 		// the two memory map arrays are used to map each page of the
-		// 64k address space (256 pages à 256 bytes) to the appropriate
+		// 64k address space (256 pages Ã  256 bytes) to the appropriate
 		// ram, rom (basic, kernal) or i/o (vic, sid, cia1, cia2)
 		// memory images, separately for both read and write access.
 		this.memoryMapRead = [];
@@ -237,6 +237,7 @@ nl.kingsquare.c64.memory.MemoryManager = Class.extend({
 	 * Copy contents to memory.
 	 */
 	onLoadPRG: function(data) {
+console.log("prog loaded, getting Bytearray...");		
 		var ba = nl.kingsquare.as3.flash.utils.ByteArray(data);
 		console.log("PRG file loaded");
 		// get start address
