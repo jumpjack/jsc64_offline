@@ -31,6 +31,7 @@ function loadFileData(filePath, cachedDataArray) {
     const isLocalFile = window.location.protocol === 'file:';
 
     if (true/*isLocalFile*/) {
+console.log("Chiedo file all'utente");	    
         // Crea un input di tipo file dinamico per selezionare un file
 alert("Selezionare il file per " + filePath);	    
         const inputFile = document.createElement('input');
