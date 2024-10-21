@@ -161,7 +161,7 @@ console.log("loadPRG in jsQuery.jsc64");
 
 		// get start address
 		ba.endian = Endian.LITTLE_ENDIAN;
-		startAddress = ba.readShort();
+		startAddress = ba.readLong();
 console.log("start=",startAddress);		
 
 		// copy contents
