@@ -47,10 +47,21 @@ nl.kingsquare.as3.flash.utils.getByteArray = function(bytes, endian) {
 
     //Reads a signed 16-bit integer from the byte stream
     result.readShort = function() {
+console.log("readShort");	    
+console.log("pos1=",this.position++);	    
+console.log("readShort");	    
     	var x = (this[this.position++]) + (this[this.position++] << 8), max = 65536;
 		return ( (x >= (max / 2 ))? x - max : x);
     }
 
+    //Reads a UNsigned 16-bit integer from the byte stream
+    result.readLong = function() {
+console.log("readLong");	    
+	    
+    	var x = (this[this.position++]) + (this[this.position++] << 8);
+		return x;
+    }
+	
     result.setValueByAddress = function (address, value) {
         this[address] = value;
     }
