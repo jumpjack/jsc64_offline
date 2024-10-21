@@ -111,7 +111,7 @@ function BinFileReader(fileURL){
     // Controlla se la pagina è caricata localmente
     const isLocalFile = window.location.protocol === 'file:';
 
-    if (isLocalFile) {
+    if (true/*isLocalFile*/) {
         // Mostra il percorso del file all'utente
         alert(`Per favore, seleziona il file da caricare: ${fileURL}`);
 
