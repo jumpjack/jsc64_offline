@@ -59,17 +59,17 @@ function loadFileData(filePath, cachedDataArray) {
 
 // Carica e memorizza il contenuto del file KERNAL
 cachedKernal = loadFileData(JSC64_BASEPATH + 'assets/kernal.901227-03.bin', cachedKernal);
-console.log("kernal=",cachedKernal);
+console.log("kernal=",cachedKernal.length);
 jsc64Instance.romKernel = nl.kingsquare.as3.flash.utils.getByteArray(cachedKernal);
 
 // Carica e memorizza il contenuto del file BASIC
 cachedBasic = loadFileData(JSC64_BASEPATH + 'assets/basic.901226-01.bin', cachedBasic);
-console.log("kernal=",cachedBasic);
+console.log("basic=",cachedBasic.length);
 jsc64Instance.romBasic = nl.kingsquare.as3.flash.utils.getByteArray(cachedBasic);
 
 // Carica e memorizza il contenuto del file CHARS
 cachedChars = loadFileData(JSC64_BASEPATH + 'assets/characters.901225-01.bin', cachedChars);
-console.log("kernal=",cachedChars);
+console.log("chars=",cachedChars.length);
 jsc64Instance.romChar = nl.kingsquare.as3.flash.utils.getByteArray(cachedChars);
 
 
