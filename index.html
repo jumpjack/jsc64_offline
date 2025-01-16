@@ -10,6 +10,7 @@
 	<fieldset id="controls">
 		<h2>Click on one ROM to load&amp;launch it</h2>
 		<ul id="romList">
+			<li><a href="rom/CAPTURED!.PRG">CAPTURED!</a></li>
 			<li><a href="rom/CHOP.PRG">Choplifter loader</a> (<a href="https://github.com/jumpjack/ChoplifterReverseWithAI/tree/main>disassembly experiment"</a>)</li>
 			<li><a href="rom/CHOPLIFTER-MAIN.PRG">Choplifter loader</a> (<a href="https://github.com/jumpjack/ChoplifterReverseWithAI/tree/main">disassembly experiment</a>)</li>
 			<li><a href="rom/SIDE PACMAN.PRG">SIDE PAcMAN by MR.Z</a> (<a href="https://github.com/jumpjack/ChoplifterReverseWithAI/tree/main/others">disassembly experiment</a>)</li>
@@ -19,8 +20,10 @@
 			<li><a href="rom/MATRIX.PRG">MATRIX</a></li>
 			<li><a href="rom/RALLYSPEEDWAYII.PRG">RALLYSPEEDWAYII</a></li>
 			<li><a href="rom/VOIDRUNNER.PRG">VOIDRUNNER</a></li>
-		</ul>
-<input type="file" id="fileInput" accept=".prg"> 		
+		</ul><br>
+		Load "filename.prg",8: <input type="file" id="fileInput" accept=".prg"><br>
+		Load "filename.prg",8,1: <input type="file" id="fileInput81" accept=".prg"><br>
+		Load status: <span id="loadStatus">-</span><br>
 		<h2>Controls</h2>
 		<input type="button" id="pauseButton" value="Pause" />
 		<input type="button" id="debugButton" value="Debug" />
@@ -33,31 +36,33 @@
 	</fieldset>
 	<div id="container"></div>
 	<div id="loadingProgress">Booting: <span class="progress">0</span>% complete</div>
+	<br>
 	<div id="ram">   <canvas id="memoryCanvas" width="256" height="256"></canvas></div>
 	<br>
-	Disassemble:
+	<br>
+	Disassemble:<br>
 	From: <input type="text" id="disStart" value = "0x0801"> - To: <input type="text" id="disEnd" value = "0x0900">
 	<button id = "btnDis" onclick="disass()">Disassemble</button><br>
-	<textarea id="txtDisassembly" cols = 50 row= 50>-</textarea><br>
-	
+	<textarea id="txtDisassembly" cols = 80 rows= 50>-</textarea><textarea id="txtDump" cols = 80 rows= 50>-</textarea><br>
+<br><br><br>
  
-
 	<script type="text/javascript" src="js/kernal.js"></script>
 	<script type="text/javascript" src="js/basic.js"></script>
 	<script type="text/javascript" src="js/chargen.js"></script>
+
 	<script type="text/javascript" src="js/jquery/jquery-1.12.4.min.js"></script>
 	<script type="text/javascript" src="js/jquery.jsc64classes.js"></script>
 	<script type="text/javascript" src="js/jquery.jsc64.js"></script>
 
-	
+
 	<script type="text/javascript">
 		// <![CDATA[
 		//var jsc64; // let's make it available in console...
 		$(document).ready(function() {
 			var jsc64 = $('#container').jsc64($(document)), jsc64Instance = jsc64.jsc64GetInstance(),  percentageComplete = 0, bootWaitFunction;
-			bootWaitFunction = function() {				
+			bootWaitFunction = function() {
 				$('#loadingProgress .progress').text(percentageComplete++);
-				if (percentageComplete>100) {				
+				if (percentageComplete>100) {
 					$('#loadingProgress').hide('slow');
 					$('#controls').show('slow');
 					jsc64Instance._renderer.frameTimer.detachEvent('timer', bootWaitFunction);
@@ -65,80 +70,110 @@
 			}
 			jsc64Instance._renderer.frameTimer.addEventListener('timer', bootWaitFunction);
 ////////////////////////////////////////////
-         updateInterval = 100;
-	 pixelSize = 4;			
-         isUpdating = false;
-         updateTimer = null;
-	myC64 = null;
-        const toggleUpdateButton = document.getElementById('toggleUpdate');
-        toggleUpdateButton.addEventListener('click', startUpdate);
-			
-console.log("JSC64:", jsc64);
+	        updateInterval = 100;
+		 	pixelSize = 4;
+	        isUpdating = false;
+	        updateTimer = null;
+			myC64 = null;
+	        const toggleUpdateButton = document.getElementById('toggleUpdate');
+	        toggleUpdateButton.addEventListener('click', startUpdate);
 				
-myC64 = jsc64.jsc64GetInstance();			
-console.log("Use this object to access functions:", myC64);
+			console.log("JSC64:", jsc64);
 
-myMemObj = myC64._mem;
-console.log("Use this object to access memory functions and data:", myMemObj);
-			
-mem64kUint8 = new Uint8Array(myMemObj.ram);
-console.log("Whole RAM is in myC64._mem.ram: ",myC64._mem.ram);
+			myC64 = jsc64.jsc64GetInstance();
+			console.log("Use myC64 object ( jsc64.jsc64GetInstance() ) to access functions:", myC64, Object.keys(myC64));
 
-myCPU = myC64._cpu;
-console.log("Use this object to access CPU functions and data:", myCPU);
-			
-			
+			myMem = myC64._mem;
+			console.log("Use myMem object (myC64._mem) to access memory functions and data:", myMem,Object.keys(myMem));
+
+			mem64kUint8 = new Uint8Array(myMem.ram);
+			console.log("Whole RAM is in myC64._mem.ram: ",myC64._mem.ram);
+
+			myCPU = myC64._cpu;
+			console.log("Use myCPU object (myC64._cpu) to access CPU functions and data:", myCPU,Object.keys(myCPU));
+console.log("Read byte from ram:      myC64._mem.read(53280)  or   myC64._cpu.memory.read(53280) ( peek(53280) )");
+console.log("Read 16 bit word from ram:      myC64._mem.readWord(0xFCE2)  or   myC64._cpu.memory.readWord(0xFCE2)  )");
+
+
+console.log("Write byte to ram:       myC64._mem.write(53280,1) or   myC64._cpu.memory.write(53280,1) ( poke 53280,1 )");
+console.log("Jump to ram address:     myC64._cpu.pc = 64738  ( sys 64738 )");
+console.log("Memory dump:     		  myC64._cpu.memory.dump(0x801,10,16)  (start, len, line length)");
+
+
+			document.getElementById('fileInput').addEventListener('change', function(event) {
+	            const file = event.target.files[0];
+	            jsc64.loadPrg(file, true);
+	        });
+
+			document.getElementById('fileInput81').addEventListener('change', function(event) {
+			    const file = event.target.files[0];
+			    // put file contents directly into RAM myC64._mem
+
+			    const reader = new FileReader();
+
+			    reader.onload = function(e) {
+			        const content = e.target.result;
+			        const fileContent = new Uint8Array(e.target.result);
+
+			        // Leggi l'indirizzo di destinazione dai primi 2 byte
+			        const destAddress = (fileContent[0] + (fileContent[1] << 8));
+
+			        // Copia il resto del contenuto del file in ram a partire da destAddress
+			        for (let i = 2; i < fileContent.length; i++) {
+			            myC64._mem.ram[destAddress + (i-2)] = fileContent[i];
+			        }
+			    };
+			    reader.readAsArrayBuffer(file);
+	        });
+
+
 			$('#pauseButton').click(function() {
 				jsc64.jsc64Pause();
 			});
-			
+
+
 			$('#debugButton').click(function() {
 //
 			});
+
 			
 			$('#RAMbutton').click(function() {
 				showMemory(mem64kUint8,2);
 			});
-			
+
+
 			$('#romList a').click(function() {
-			  	jsc64.loadPrg($(this).attr('href'));
+			  	jsc64.loadPrg($(this).attr('href'), false);
 			  	return false;
 			});
 
-document.getElementById('fileInput').addEventListener('change', function(event) {
-    const file = event.target.files[0];
-    MyModule.loadPrg(file);
-});
-			
+	        const canvas = document.getElementById('memoryCanvas');
+	        const ctx = canvas.getContext('2d');
 
-			
-        const canvas = document.getElementById('memoryCanvas');
-        const ctx = canvas.getContext('2d');
-
-        function showMemory(memory,pixelSize) {
-	   // accepts jsc64._mem.ram
-            const width = 256 * pixelSize;
-            const height = 256 * pixelSize;
-            canvas.width = width;
-            canvas.height = height;
-            
-            const imageData = ctx.createImageData(width, height);
-            for (let y = 0; y < 256; y++) {
-                for (let x = 0; x < 256; x++) {
-                    const value = memory[y * 256 + x];
-                    for (let py = 0; py < pixelSize; py++) {
-                        for (let px = 0; px < pixelSize; px++) {
-                            const index = ((y * pixelSize + py) * width + (x * pixelSize + px)) * 4;
-                            imageData.data[index] = value;     // R
-                            imageData.data[index + 1] = value; // G
-                            imageData.data[index + 2] = value; // B
-                            imageData.data[index + 3] = 255;   // A
-                        }
-                    }
-                }
-            }
-            ctx.putImageData(imageData, 0, 0);
-        }	
+	        function showMemory(memory,pixelSize) {
+		   // accepts jsc64._mem.ram
+	            const width = 256 * pixelSize;
+	            const height = 256 * pixelSize;
+	            canvas.width = width;
+	            canvas.height = height;
+	            
+	            const imageData = ctx.createImageData(width, height);
+	            for (let y = 0; y < 256; y++) {
+	                for (let x = 0; x < 256; x++) {
+	                    const value = memory[y * 256 + x];
+	                    for (let py = 0; py < pixelSize; py++) {
+	                        for (let px = 0; px < pixelSize; px++) {
+	                            const index = ((y * pixelSize + py) * width + (x * pixelSize + px)) * 4;
+	                            imageData.data[index] = value;     // R
+	                            imageData.data[index + 1] = value; // G
+	                            imageData.data[index + 2] = value; // B
+	                            imageData.data[index + 3] = 255;   // A
+	                        }
+	                    }
+	                }
+	            }
+	            ctx.putImageData(imageData, 0, 0);
+	        }
 
        function startUpdate() {
 console.log("startUpdate?");	       
@@ -162,12 +197,49 @@ console.log("udating every ", updateInterval);
         }	
 
 
+		});
+
 function disass() {
 	startAddr = document.getElementById("disStart").value;
 	endAddr = document.getElementById("disEnd").value;
-	document.getElementById("txtDisassembly").value = myC64._cpu.disassemble(startAddr, endAddr-startAddr)
+	//disassemble: function(startAddress, instructionCount, showAddress, showValue)
+	//disassemble: function(int ,     int ,            boolean, boolean )
+
+	document.getElementById("txtDisassembly").value = myC64._cpu.disassemble(startAddr, endAddr-startAddr, true, true)
 }
-		});
+
+
+function dump() {
+	startAddr = document.getElementById("disStart").value;
+	endAddr = document.getElementById("disEnd").value;
+	//disassemble: function(startAddress, instructionCount, showAddress, showValue)
+	//disassemble: function(int ,     int ,            boolean, boolean )
+
+	document.getElementById("txtDump").value = myC64._mem.dump(startAddr, endAddr-startAddr, 16)
+}
+
+
+function memoryDump(uint8Array, startAddress = 0, bytesPerRow = 16) {
+//console.log("Dumping ", uint8Array , " from ", startAddress);
+    let result = '';
+	offset = 0;
+
+    // Itera l'array gestendo blocchi della dimensione specificata da bytesPerRow
+    for (let i =  offset; i < uint8Array.length; i += bytesPerRow) {
+        // Calcola l'indirizzo corrente
+        let currentAddress = (startAddress + i).toString(16).padStart(4, '0').toUpperCase();
+        // Estrai un blocco di numeri di dimensione bytesPerRow
+        let chunk = uint8Array.slice(i, i + bytesPerRow);
+
+        // Converti ogni numero in esadecimale, con padding per farlo essere sempre di 2 cifre
+        let hexLine = Array.from(chunk).map(num => num.toString(16).padStart(2, '0').toUpperCase()).join(' ');
+
+        // Aggiungi l'indirizzo e la riga di byte formattata
+        result += `${currentAddress}: ${hexLine}\n`;
+    }
+
+    return result;
+}
 		// ]]>
 	</script>
 </body>
